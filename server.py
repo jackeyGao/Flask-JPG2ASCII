@@ -20,6 +20,7 @@ UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__),'uploads')
 ALLOWED_EXTENSIONS = set(['jpg', 'jpeg'])
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+jp2a = "/app/.heroku/vendor/bin/jp2a"
 
 
 def allowed_file(filename):
@@ -45,8 +46,8 @@ def home():
         jpg.save(jpg_path)
 
         background = "dark" if request.form.get("is_dark", None) else "light"
-        status, out = commands.getstatusoutput("source /etc/profile; jp2a %s \
-                --background=%s --width=68" % (jpg_path, background ))
+        status, out = commands.getstatusoutput("source /etc/profile; %s %s \
+                --background=%s --width=68" % (jp2a, jpg_path, background ))
 
         if status == 0:
             return render_template('index.html',
