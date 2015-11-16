@@ -61,5 +61,6 @@ def home():
                 status=u"尽量选择颜色比较单一的JPG")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
 
