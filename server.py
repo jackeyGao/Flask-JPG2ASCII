@@ -46,8 +46,8 @@ def home():
         jpg.save(jpg_path)
 
         background = "dark" if request.form.get("is_dark", None) else "light"
-        status, out = commands.getstatusoutput("source /etc/profile; %s %s \
-                --background=%s --width=68" % (jp2a, jpg_path, background ))
+        status, out = commands.getstatusoutput("%s %s --background=%s --width=68"\
+                % (jp2a, jpg_path, background ))
 
         if status == 0:
             return render_template('index.html',
