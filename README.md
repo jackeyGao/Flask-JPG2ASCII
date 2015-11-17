@@ -37,6 +37,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
-[1]:https://github.com/jackeyGao/Flask-JPG2ASCII/raw/master/ScreenCapture/screenCapture-1.jpg
-[2]:https://github.com/jackeyGao/Flask-JPG2ASCII/raw/master/ScreenCapture/screenCapture-1.jpg
+[1]:https://raw.githubusercontent.com/jackeyGao/Flask-JPG2ASCII/master/ScreenCapture/screenCapture-1.png
+[2]:https://raw.githubusercontent.com/jackeyGao/Flask-JPG2ASCII/master/ScreenCapture/screenCapture-2.png
 
