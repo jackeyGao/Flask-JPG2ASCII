@@ -20,7 +20,7 @@ UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__),'uploads')
 ALLOWED_EXTENSIONS = set(['jpg', 'jpeg'])
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-jp2a = "./bin/jp2a"
+jp2a = "jp2a"
 
 
 def allowed_file(filename):
