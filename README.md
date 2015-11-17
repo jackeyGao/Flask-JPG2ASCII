@@ -3,13 +3,27 @@
 将图片转换成ascii图像, 推荐选择线条比较少，色彩比较单一而且颜色差距大的图片.
 后端为tornado， 接受请求后使用[jp2a](https://csl.name/jp2a/)进行转换.
 
-演示地址: [http://jpg2ascii.omem.me](http://jpg2ascii.omem.me)
+演示地址: [jpg2ascii.herokuapp.com](https://jpg2ascii.herokuapp.com/)
 
 ## 截屏
 
 ![home][1]
 ![show][2]
 
+## 关于在heroku编译
+
+首先使用
+
+```shell
+heroku run /bin/bash
+```
+
+然后获得一个属于你当前app的shell环境
+
+然后
+进行wget包, configure 环境, make 之后, make install .
+然后把jp2a 命令scp到一个公有环境的服务器.
+然后git add到包里面完成打包工作.
 
 
 ## License
