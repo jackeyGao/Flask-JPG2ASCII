@@ -22,7 +22,7 @@ heroku run /bin/bash
 
 然后
 进行wget包, configure 环境, make 之后, make install .
-然后把jp2a 命令scp到一个公有环境的服务器.
+然后把jp2a(编译得到的命令)命令scp到一个公有环境的服务器.
 然后git add到包里面完成打包工作.
 
 
