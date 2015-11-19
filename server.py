@@ -20,7 +20,11 @@ UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__),'uploads')
 ALLOWED_EXTENSIONS = set(['jpg', 'jpeg'])
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-jp2a = "/app/bin/jp2a"
+
+if 'heroku' in os.environ.get("_", 'None'):
+    jp2a = "/app/bin/jp2a"
+else:
+    jp2a = "source /etc/profile ; jp2a"
 
 
 def allowed_file(filename):
