@@ -14,12 +14,17 @@ from flask import abort, redirect, url_for
 from flask import request
 from flask import render_template
 from werkzeug import secure_filename
+from flask_qiniustorage import Qiniu
 
-
-UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__),'uploads')
 ALLOWED_EXTENSIONS = set(['jpg', 'jpeg'])
+QINIU_ACCESS_KEY = '-9GvtvlzlYsJThtrNMVocrhcsh3lmOTAuY6aXEBT'
+QINIU_SECRET_KEY = 'l7fqBwgd-3M5ApcquLCFb-KKmLmNcIrlpQGJbBem'
+QINIU_BUCKET_NAME = 'jpg2ascii'
+QINIU_BUCKET_DOMAIN = '7xogjf.com1.z0.glb.clouddn.com'
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config.from_object(__name__)
+
+qiniu_store = Qiniu(app)
 
 if 'heroku' in os.environ.get("_", 'None'):
     jp2a = "/app/bin/jp2a"
@@ -45,9 +50,9 @@ def home():
                     error_message=u"仅支持jpeg,jpg",
                     status=False)
 
-        jpg_name = uuid.uuid1().hex + '.' + jpg.filename.rsplit('.', 1)[1]
-        jpg_path = os.path.join(app.config['UPLOAD_FOLDER'], jpg_name)
-        jpg.save(jpg_path)
+        jpg_name = uuid.uuid1().hex + '-' + jpg.filename
+        jpg_path = 'http://%s/%s' % (app.config['QINIU_BUCKET_DOMAIN'], jpg_name)
+        ret, info = qiniu_store.save(jpg, jpg_name)
 
         background = "dark" if request.form.get("is_dark", None) else "light"
         status, out = commands.getstatusoutput("%s %s --background=%s --width=68"\
@@ -61,7 +66,7 @@ def home():
             return render_template('index.html', 
                     error_message=out, 
                     status=False)
-    else:
+    if request.method == "GET":
         return render_template('index.html', 
                 status=u"尽量选择颜色比较单一的JPG")
 
