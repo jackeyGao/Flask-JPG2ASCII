@@ -16,7 +16,6 @@ from flask import render_template
 from werkzeug import secure_filename
 from flask_qiniustorage import Qiniu
 
-ALLOWED_EXTENSIONS = set(['jpg', 'jpeg'])
 QINIU_ACCESS_KEY = '-9GvtvlzlYsJThtrNMVocrhcsh3lmOTAuY6aXEBT'
 QINIU_SECRET_KEY = 'l7fqBwgd-3M5ApcquLCFb-KKmLmNcIrlpQGJbBem'
 QINIU_BUCKET_NAME = 'jpg2ascii'
