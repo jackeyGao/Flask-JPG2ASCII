@@ -36,39 +36,32 @@ def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
+@app.route('/upload', methods=('POST',))
+def upload():
+    """上传文件并转化为ASCII接口"""
+    image = request.files.get("image")
+    dark = request.form.get("dark")
+    bucket = 'http://' + app.config['QINIU_BUCKET_DOMAIN']
 
-@app.route('/', methods=('GET', 'POST'))
+    name = uuid.uuid1().hex + '-' + image.filename
+    path = '%s/%s' % (bucket, name)
+    qiniu_store.save(image, name)
+
+    background = "dark" if dark=='true' else "light"
+    status, output = commands.getstatusoutput(
+            "%s %s"
+            " --background=%s"
+            " --width=68"
+            % (jp2a, path, background)
+            )
+    return output
+
+
+@app.route('/', methods=('GET', ))
 def home():
-    if request.method == "POST":
-        jpg = request.files.get("jpg", None)
-        if not jpg:
-            return render_template('index.html', 
-                    error_message=u"没有指定文件",
-                    status=False)
-        if not allowed_file(jpg.filename):
-            return render_template('index.html', 
-                    error_message=u"仅支持jpeg,jpg",
-                    status=False)
-
-        jpg_name = uuid.uuid1().hex + '-' + jpg.filename
-        jpg_path = 'http://%s/%s' % (app.config['QINIU_BUCKET_DOMAIN'], jpg_name)
-        ret, info = qiniu_store.save(jpg, jpg_name)
-
-        background = "dark" if request.form.get("is_dark", None) else "light"
-        status, out = commands.getstatusoutput("%s %s --background=%s --width=68"\
-                % (jp2a, jpg_path, background ))
-
-        if status == 0:
-            return render_template('index.html',
-                output=out,
-                status=True)
-        else:
-            return render_template('index.html', 
-                    error_message=out, 
-                    status=False)
-    if request.method == "GET":
-        return render_template('index.html', 
-                status=u"尽量选择颜色比较单一的JPG")
+    """JPG2ASCII首页"""
+    return render_template('index.html', 
+        status=u"尽量选择颜色比较单一的JPG")
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))

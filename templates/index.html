@@ -9,6 +9,7 @@
   <title>JPG2Ascii | 图片(JPG)转换成ASCII服务</title>
   <link rel="stylesheet" type="text/css" href="static/semantic.css">
   <link rel="stylesheet" type="text/css" href="static/homepage.css">
+  <script src="static/homepage.js"></script>
   <style type="text/css">
   a{ text-decoration: none;}
   a:hover{txt-decoration:underline;}
@@ -21,50 +22,29 @@
       <h1 class="ui teal header">
         JPG2ASCII
       </h1>
-      <form class="ui large form" action="/" method="post" enctype="multipart/form-data">
+      <form class="ui large form" method="post" onsubmit="return onRequestCreate()">
         <div class="ui stacked segment">
-        {% if status %}
-          {% if status == True %}
-            <div class="ui yellow message">转换成功</div>
-          {% else %}
-            <div class="ui yellow message">尽量选择色彩线条比较简单的JPG</div>
-          {% endif %}
-        {% else %}
-          <div class="ui red message">转换失败</div>
-        {% endif %}
+          <div id="message_box" class="ui yellow message">尽量选择色彩线条比较简单的JPG</div>
 
           <div class="field">
             <div class="ui input">
               <i class="image icon"></i>
-              <input type="file" name="jpg" placeholder="上传图片">
+              <input id="image" type="file" name="jpg" placeholder="上传图片">
             </div>
           </div>
           <div class="field">
             <div class="ui slider checkbox input">
-              <input type="checkbox" name="is_dark">
+              <input id="is_dark" type="radio" name="is_dark">
               <label class="green label">启用Dark模式</label>
             </div>
           </div>
-          <input class="ui fluid large teal submit button" type="submit" value="提交">
+          <input id="submit" class="ui fluid large teal submit button" type="submit" value="提交" >
         </div>
       </form>
-      {% if error_message %}
-      <div class="ui error message">{{ error_message }}</div>
-      {% endif %}
     </div>
   </div>
   <div class="ui middle aligned center aligned grid">
-  <div id="output" class="column columncontent">
-      {% if output %}
-      <div class="ui green message">
-      <pre>{{ output }}</pre>
-      </div>
-      {% endif %}
-  </div>
-  </div>
-  <div class="ui middle aligned center grid">
-    <div class="column">
-      <h5 class="ui teal header">Create by <a class="ui teal label" href="http://omem.me">JackeyGao</a></h5>
+    <div id="content" class="column columncontent">
     </div>
   </div>
 </body>
