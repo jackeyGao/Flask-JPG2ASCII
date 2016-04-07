@@ -51,7 +51,10 @@ function onRequestCreate() {
                 var submit = document.getElementById("submit");
                 submit.value = '提交';
             } else {
-                alert("Problem retrieving XML data");
+                addMessage('red', '失败');
+                image.value = '';
+                var submit = document.getElementById("submit");
+                submit.value = '提交';
             }
         }
     }
