@@ -43,7 +43,7 @@ def upload():
     dark = request.form.get("dark")
     bucket = 'http://' + app.config['QINIU_BUCKET_DOMAIN']
 
-    name = uuid.uuid1().hex + '-' + image.filename
+    name = uuid.uuid1().hex + '.jpg'
     path = '%s/%s' % (bucket, name)
     qiniu_store.save(image, name)
 

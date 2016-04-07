@@ -32,7 +32,7 @@
           <form class="ui fluid center form segment" action="/" method="post" enctype="multipart/form-data">
             <input class="ui small green button" type="file" name="file">
             <input class="ui blue submit button" type='submit' value="submit" \>
-            <div class="ui {{ color }} message">
+            <div id="content" class="ui {{ color }} message">
               {% if content %}
                 <pre>{{ content }}</pre>
               {% endif %}
