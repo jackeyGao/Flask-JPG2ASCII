@@ -5,15 +5,8 @@ Author: JackeyGao
 mail: junqi.gao@shuyun.com
 Created Time: 五 11/13 16:11:23 2015
 '''
-import os
-import commands
-import uuid
-from flask import Flask
-from flask import make_response
-from flask import abort, redirect, url_for
-from flask import request
-from flask import render_template
-from werkzeug import secure_filename
+import os, commands, uuid
+from flask import Flask, request, render_template
 from flask_qiniustorage import Qiniu
 
 QINIU_ACCESS_KEY = '-9GvtvlzlYsJThtrNMVocrhcsh3lmOTAuY6aXEBT'
@@ -65,5 +58,3 @@ def home():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
-
-

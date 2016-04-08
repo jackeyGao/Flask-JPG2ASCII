@@ -6,8 +6,10 @@ function addMessage(color, message) {
     
 function onRequestCreate() {
     var 
+        formData = new FormData();  
         image = document.getElementById("image"),
         dark = document.getElementById("is_dark"),
+        submit = document.getElementById("submit");
         isDark = dark.checked,
         fileName = image.value;
 
@@ -19,49 +21,50 @@ function onRequestCreate() {
         return false;
     }
 
-    var formData = new FormData();  
     formData.append('image', image.files[0]);
     formData.append('dark', isDark);
-    
-    function stateChange() {
-        if (xhr.readyState==1) {
-            var submit = document.getElementById("submit");
-            submit.value = '正在上传..';
-        };
 
-        if (xhr.readyState==4) {
-            if (xhr.status==200) {// 200 = OK
-                var contentPre = document.getElementById('content-pre');
-                if (contentPre) {
-                    contentPre.innerText = xhr.responseText;
-                } else {
-                    // 创建输出div并输出
-                    var output = document.createElement('div');
-                    var pre = document.createElement('pre');
-                    output.className = "ui green message";
-                    pre.id = "content-pre";
-                    pre.innerText = xhr.responseText ;
-                    output.appendChild(pre);
-                    content.appendChild(output);
+    function ajax(method, url, data) {
+        var request = new XMLHttpRequest();
+        return new Promise(function(resolve, reject) {
+            request.onreadystatechange = function() {
+                if (request.readyState===1) {
+                    submit.value = '正在上传..';
                 }
-
-                addMessage('yellow', '成功');
-                // 清空上一次图片url按钮
-                image.value = '';
-                var submit = document.getElementById("submit");
-                submit.value = '提交';
-            } else {
-                addMessage('red', '失败');
-                image.value = '';
-                var submit = document.getElementById("submit");
-                submit.value = '提交';
-            }
-        }
+                if (request.readyState===4) {
+                    if (request.status === 200) {
+                        resolve(request.responseText);
+                    } else {
+                        reject(request.status);
+                    }
+                }
+            };
+            request.open(method, url);
+            request.send(formData);
+        });
     }
 
-    var xhr = new XMLHttpRequest(); 
-    xhr.onreadystatechange=stateChange;
-    xhr.open("POST", "/upload");
-    xhr.send(formData);
+    var post = ajax('POST', '/upload');
+    post.then(function (text) {
+        var contentPre = document.getElementById('content-pre');
+        if (contentPre) {
+            contentPre.innerText = text;
+        } else {
+            var 
+                output = document.createElement('div'),
+                pre = document.createElement('pre');
+            output.className = "ui green message";
+            pre.id = "content-pre";
+            pre.innerText = text;
+            output.appendChild(pre);
+            content.appendChild(output);
+        }
+        addMessage('yellow', '成功');
+        submit.value = '提交';
+    }).catch(function(status) {
+        addMessage('red', '失败');
+        submit.value = '提交';
+    });
+
     return false;
 }
